@@ -50,6 +50,8 @@ lib LibSDL2
   WINDOW_SHOWN      = 0x00000004_u32
   WINDOW_RESIZABLE  = 0x00000020_u32
 
+  WINDOWPOS_UNDEFINED = 0x1FFF0000
+
   RENDERER_ACCELERATED = 0x00000002_u32
 
   DISABLE = 0
@@ -168,9 +170,15 @@ lib LibSDL2
   fun delay = SDL_Delay(ms : UInt32) : Void
   fun poll_event = SDL_PollEvent(event : Event*) : Int32
   fun wait_event = SDL_WaitEvent(event : Event*) : Int32
+
+  fun get_window_surface = SDL_GetWindowSurface(window : Window*) : Surface*
   fun lock_surface = SDL_LockSurface(surface : Surface*) : Int32
   fun unlock_surface = SDL_UnlockSurface(surface : Surface*) : Void
+  fun update_window_surface = SDL_UpdateWindowSurface(window : Window*) : Int32
+
   fun update_rect = SDL_UpdateRect(screen : Surface*, x : Int32, y : Int32, w : Int32, h : Int32) : Void
+  fun fill_rect = SDL_FillRect(surface : Surface*, rect : Rect*, c : UInt32) : Int32
+
   fun show_cursor = SDL_ShowCursor(toggle : Int32) : Int32
   fun get_ticks = SDL_GetTicks : UInt32
   fun flip = SDL_Flip(screen : Surface*) : Int32
@@ -181,6 +189,8 @@ lib LibSDL2
 
   fun rw_from_file = SDL_RWFromFile(str1 : UInt8*, str2 : UInt8*) : RWops*
   fun load_bmp_rw = SDL_LoadBMP_RW(rw_ops : RWops*, int : Int32) : Surface*
+
+  fun map_rgb = SDL_MapRGB(format : PixelFormat*, r : UInt8, g : UInt8, b : UInt8) : UInt32
 
 end
 
