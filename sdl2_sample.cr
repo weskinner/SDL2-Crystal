@@ -5,9 +5,9 @@ height = 720
 
 SDL2.init
 
-window = SDL2.create_window("hello", 100, 100, width, height, LibSDL2::WINDOW_SHOWN | LibSDL2::WINDOW_RESIZABLE)
-renderer = SDL2.create_renderer(window, -1, LibSDL2::RENDERER_ACCELERATED)
-# image = SDL2.load_bmp("hello.bmp")
+window = SDL2::Window.new("hello", 100, 100, width, height, LibSDL2::WINDOW_SHOWN | LibSDL2::WINDOW_RESIZABLE)
+renderer = SDL2::Renderer.new(window, -1, LibSDL2::RENDERER_ACCELERATED)
+image = SDL2.load_bmp("hello.bmp", 32, 32)
 
 running = true
 while running

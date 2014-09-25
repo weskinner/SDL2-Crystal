@@ -156,6 +156,9 @@ lib LibSDL2
     key : KeyboardEvent
   end
 
+  struct RWops
+  end
+
   fun init = SDL_Init(flags : UInt32) : Int32
   fun get_error = SDL_GetError() : UInt8*
   fun quit = SDL_Quit() : Void
@@ -175,6 +178,9 @@ lib LibSDL2
   fun create_renderer = SDL_CreateRenderer(window : Window*, index : Int32, flags : UInt32) : Renderer*
   fun renderer_clear = SDL_RenderClear(renderer : Renderer*) : Int32
   fun renderer_present = SDL_RenderPresent(renderer : Renderer*) : Int32
+
+  fun rw_from_file = SDL_RWFromFile(str1 : UInt8*, str2 : UInt8*) : RWops*
+  fun load_bmp_rw = SDL_LoadBMP_RW(rw_ops : RWops*, int : Int32) : Surface*
 
 end
 

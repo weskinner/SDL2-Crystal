@@ -7,29 +7,13 @@ module SDL2
     end
   end
 
-  def self.create_window(title, x, y, width, height, flags)
-    window = LibSDL2.create_window(title, x, y, width, height, flags)
-    if window.nil?
-      raise "Can't create SDL window: #{error}"
+  def self.load_bmp(file_name, width, height)
+    surface = LibSDL2.load_bmp_rw(LibSDL2.rw_from_file(file_name, "rb"), 1);
+    if surface.nil?
+      raise "Can't load \"#{file_name}\": #{error}"
     end
-    Window.new(window, title, x, y, width, height)
+    Surface.new(surface, width, height, 0_u32) #TODO automatic surface size
   end
-
-  def self.create_renderer(window, index, flags)
-    render = LibSDL2.create_renderer(window.window, index, flags)
-    if render.nil?
-      raise "Can't create SDL render: #{error}"
-    end
-    Renderer.new(render)
-  end
-
-  # def self.load_bmp(file_name)
-  #   surface = LibSDL2.load_bmp(file_name)
-  #   if surface.nil?
-  #     raise "Can't load \"#{file_name}\": #{error}"
-  #   end
-  #   Surface.new(surface, 10, 10, 0_u32)
-  # end
 
   def self.show_cursor
     LibSDL2.show_cursor LibSDL2::ENABLE
