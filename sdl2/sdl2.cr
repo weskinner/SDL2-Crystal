@@ -1,6 +1,12 @@
 require "./*"
 
 module SDL2
+  def self.run(flags = LibSDL2::INIT_EVERYTHING)
+    init flags
+    yield
+    quit
+  end
+
   def self.init(flags = LibSDL2::INIT_EVERYTHING)
     if LibSDL2.init(flags) != 0
       raise "Can't initialize SDL: #{error}"
