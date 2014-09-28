@@ -14,7 +14,18 @@ class SDL2::Window
   end
 
   def get_surface()
-    return LibSDL2.get_window_surface(@window)
+    surface = LibSDL2.get_window_surface(@window)
+    if surface.nil?
+      raise "Can't get surface: #{SDL2.error}"
+    end
+    return surface
+  end
+
+  def update_surface()
+    value = LibSDL2.update_window_surface(@window)
+    if value != 0
+      raise "Can't update window surface: #{SDL2.error}"
+    end
   end
 
 end

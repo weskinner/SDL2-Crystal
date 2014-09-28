@@ -84,7 +84,7 @@ lib LibSDL2
 
   struct Surface
     flags : UInt32
-    format : PixelFormat* #TODO
+    format : PixelFormat*
     w, h : Int32
     pitch : UInt16
     pixels : Void*
@@ -103,6 +103,10 @@ lib LibSDL2
 
   struct Renderer
     window : Window*
+    #TODO
+  end
+
+  struct Texture
     #TODO
   end
 
@@ -187,10 +191,14 @@ lib LibSDL2
   fun renderer_clear = SDL_RenderClear(renderer : Renderer*) : Int32
   fun renderer_present = SDL_RenderPresent(renderer : Renderer*) : Int32
 
+  fun create_texture_from_surface = SDL_CreateTextureFromSurface(renderer : Renderer*, surface : Surface*) : Texture*
+
   fun rw_from_file = SDL_RWFromFile(str1 : UInt8*, str2 : UInt8*) : RWops*
   fun load_bmp_rw = SDL_LoadBMP_RW(rw_ops : RWops*, int : Int32) : Surface*
 
   fun map_rgb = SDL_MapRGB(format : PixelFormat*, r : UInt8, g : UInt8, b : UInt8) : UInt32
+
+  fun blit_surface = SDL_UpperBlit(src : Surface*, src_rect : Rect*, dst : Surface*, dst_rect : Rect*) : Int32
 
 end
 
