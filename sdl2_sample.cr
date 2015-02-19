@@ -1,4 +1,4 @@
-require "sdl2/sdl2"
+require "./sdl2/sdl2"
 
 width  = 1280
 height = 720
