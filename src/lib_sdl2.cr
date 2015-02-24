@@ -52,11 +52,27 @@ lib LibSDL2
   WINDOW_RESIZABLE  = 0x00000020_u32
 
   WINDOWPOS_UNDEFINED = 0x1FFF0000
+  WINDOWPOS_CENTERED = 0x2FFF0000
 
   RENDERER_ACCELERATED = 0x00000002_u32
+  RENDERER_PRESENTVSYNC = 0x00000004_u32
+  RENDERER_TARGETTEXTURE = 0x00000008_u32
 
   DISABLE = 0
   ENABLE = 1
+
+  enum BlendMode
+    NONE = 0x00000000
+    BLEND = 0x00000001
+    ADD = 0x00000002
+    MOD = 0x00000004
+  end
+
+  enum TextureAccess
+    STATIC
+    STREAMING
+    TARGET
+  end
 
   struct Color
     r, g, b, unused : UInt8
@@ -143,19 +159,24 @@ lib LibSDL2
     DOWN = 274
     RIGHT = 275
     LEFT = 276
+    SPACE = 205
   end
 
   struct KeySym
     scan_code : UInt8
-    sym : UInt32
-    #TODO
+    sym : Key
+    mod : UInt16
+    pad : UInt32
   end
 
   struct KeyboardEvent
-    type : UInt8
-    which : UInt8
+    type : UInt32
+    timestamp : UInt32
+    windowID : UInt32
     state : UInt8
+    repeat : UInt8
     key_sym : KeySym
+    pad : UInt8[1000] #TODO: other event types
   end
 
   union Event
@@ -191,10 +212,16 @@ lib LibSDL2
   fun flip = SDL_Flip(screen : Surface*) : Int32
 
   fun create_renderer = SDL_CreateRenderer(window : Window*, index : Int32, flags : UInt32) : Renderer*
+  fun destroy_renderer = SDL_DestroyRenderer(renderer : Renderer*) : Void
   fun renderer_clear = SDL_RenderClear(renderer : Renderer*) : Int32
   fun renderer_present = SDL_RenderPresent(renderer : Renderer*) : Int32
+  fun renderer_set_color = SDL_SetRenderDrawColor(renderer : Renderer*, r : UInt8, g : UInt8, b : UInt8, a : UInt8) : Int32
+  fun renderer_set_blend_mode = SDL_SetRenderDrawBlendMode(renderer : Renderer*, mode : BlendMode) : Int32
+  fun set_render_target = SDL_SetRenderTarget(renderer : Renderer*, texture : Texture*) : Int32
+  fun render_copy = SDL_RenderCopy(renderer : Renderer*, texture : Texture*, srcrect : Rect*, dstrect : Rect*) : Int32
 
   fun create_texture_from_surface = SDL_CreateTextureFromSurface(renderer : Renderer*, surface : Surface*) : Texture*
+  fun create_texture = SDL_CreateTexture(renderer : Renderer*, format : UInt32, access : TextureAccess, w : Int32, h : Int32) : Texture*
 
   fun rw_from_file = SDL_RWFromFile(str1 : UInt8*, str2 : UInt8*) : RWops*
   fun load_bmp_rw = SDL_LoadBMP_RW(rw_ops : RWops*, int : Int32) : Surface*
@@ -203,6 +230,17 @@ lib LibSDL2
 
   fun blit_surface = SDL_UpperBlit(src : Surface*, src_rect : Rect*, dst : Surface*, dst_rect : Rect*) : Int32
 
+  fun remove_timer = SDL_RemoveTimer(id : Int32) : Int32
+end
+
+@[Link("SDL2_ttf")]
+lib LibSDL2_TTF
+  struct Font
+  end
+
+  fun init = TTF_Init() : Int32
+  fun quit = TTF_Quit() : Void
+  fun open_font = TTF_OpenFont(file : UInt8*, ptsize : Int32) : Font*
 end
 
 # undef main
