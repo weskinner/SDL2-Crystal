@@ -28,4 +28,9 @@ class SDL2::Window
     end
   end
 
+  def finalize
+    LibSDL2.destroy_window(@window)
+    @window = nil
+  end
+
 end

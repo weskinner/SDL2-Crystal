@@ -34,4 +34,13 @@ class SDL2::Surface
   def offset(x, y)
     x.to_i32 + (y.to_i32 * @width)
   end
+
+  def blit(src_rect : (LibSDL2::Rect*|Nil), dst : LibSDL2::Surface*, dst_rect : (LibSDL2::Rect*|Nil))
+    LibSDL2.blit_surface(@surface, src_rect, dst, dst_rect)
+  end
+
+  def finalize
+    LibSDL2.free_surface @surface
+    @surface = nil
+  end
 end

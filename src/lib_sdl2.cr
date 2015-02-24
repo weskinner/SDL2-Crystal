@@ -172,6 +172,7 @@ lib LibSDL2
   # fun set_video_mode = SDL_SetVideoMode(width : Int32, height : Int32, bpp : Int32, flags : UInt32) : Surface*
   # fun load_bmp = SDL_LoadBMP(file : UInt8*) : Surface*
   fun create_window = SDL_CreateWindow(title : UInt8*, x : Int32, y : Int32, width : Int32, height : Int32, flags : UInt32) : Window*
+  fun destroy_window = SDL_DestroyWindow(Window*) : Void
   fun delay = SDL_Delay(ms : UInt32) : Void
   fun poll_event = SDL_PollEvent(event : Event*) : Int32
   fun wait_event = SDL_WaitEvent(event : Event*) : Int32
@@ -180,6 +181,7 @@ lib LibSDL2
   fun lock_surface = SDL_LockSurface(surface : Surface*) : Int32
   fun unlock_surface = SDL_UnlockSurface(surface : Surface*) : Void
   fun update_window_surface = SDL_UpdateWindowSurface(window : Window*) : Int32
+  fun free_surface = SDL_FreeSurface(surface : Surface*) : Void
 
   fun update_rect = SDL_UpdateRect(screen : Surface*, x : Int32, y : Int32, w : Int32, h : Int32) : Void
   fun fill_rect = SDL_FillRect(surface : Surface*, rect : Rect*, c : UInt32) : Int32

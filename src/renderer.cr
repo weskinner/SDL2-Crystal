@@ -2,8 +2,8 @@ class SDL2::Renderer
   getter renderer
 
   def initialize(window, index, flags)
-    render = LibSDL2.create_renderer(window.window, index, flags)
-    if render.nil?
+    @renderer = LibSDL2.create_renderer(window.window, index, flags)
+    if @renderer.nil?
       raise "Can't create SDL render: #{SDL2.error}"
     end
   end
