@@ -82,8 +82,8 @@ lib LibSDL2
   end
 
   struct Rect
-    x, y : Int16
-    w, h : UInt16
+    x, y : Int32
+    w, h : Int32
   end
 
   struct Palette
@@ -265,6 +265,7 @@ lib LibSDL2_TTF
   fun quit = TTF_Quit() : Void
   fun open_font = TTF_OpenFont(file : UInt8*, ptsize : Int32) : Font*
   fun render_text_blended = TTF_RenderText_Blended(font : Font*, text : UInt8*, fg : LibSDL2::Color) : LibSDL2::Surface*
+  fun render_text_solid = TTF_RenderText_Solid(font : Font*, text : UInt8*, fg : LibSDL2::Color) : LibSDL2::Surface*
 end
 
 # undef main
