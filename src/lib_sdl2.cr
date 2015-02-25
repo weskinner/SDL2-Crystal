@@ -62,6 +62,8 @@ lib LibSDL2
   DISABLE = 0
   ENABLE = 1
 
+  FLIP_NONE = 0x00000000
+
   enum BlendMode
     NONE = 0x00000000
     BLEND = 0x00000001
@@ -199,6 +201,9 @@ lib LibSDL2
   struct RWops
   end
 
+  struct Point
+  end
+
   type TimerCallback = (UInt32, Void*) -> UInt32
 
   fun init = SDL_Init(flags : UInt32) : Int32
@@ -234,9 +239,11 @@ lib LibSDL2
   fun renderer_set_blend_mode = SDL_SetRenderDrawBlendMode(renderer : Renderer*, mode : BlendMode) : Int32
   fun set_render_target = SDL_SetRenderTarget(renderer : Renderer*, texture : Texture*) : Int32
   fun render_copy = SDL_RenderCopy(renderer : Renderer*, texture : Texture*, srcrect : Rect*, dstrect : Rect*) : Int32
+  fun render_copy_ex = SDL_RenderCopyEx(renderer : Renderer*, texture : Texture*, srcrect : Rect*, dstrect : Rect*, angle : Float64, center : Point*, flip : Int32) : Int32
 
   fun create_texture_from_surface = SDL_CreateTextureFromSurface(renderer : Renderer*, surface : Surface*) : Texture*
   fun create_texture = SDL_CreateTexture(renderer : Renderer*, format : UInt32, access : TextureAccess, w : Int32, h : Int32) : Texture*
+  fun destroy_texture = SDL_DestroyTexture(texture : Texture*) : Void
 
   fun rw_from_file = SDL_RWFromFile(str1 : UInt8*, str2 : UInt8*) : RWops*
   fun load_bmp_rw = SDL_LoadBMP_RW(rw_ops : RWops*, int : Int32) : Surface*
@@ -257,6 +264,7 @@ lib LibSDL2_TTF
   fun init = TTF_Init() : Int32
   fun quit = TTF_Quit() : Void
   fun open_font = TTF_OpenFont(file : UInt8*, ptsize : Int32) : Font*
+  fun render_text_blended = TTF_RenderText_Blended(font : Font*, text : UInt8*, fg : LibSDL2::Color) : LibSDL2::Surface*
 end
 
 # undef main
