@@ -29,8 +29,9 @@ lib LibSDL2
 
   SDL_FIRSTEVENT = 0
   QUIT = 0x100_u16
-  WINDOWEVENT = 0x200_u16
+  WINDOWEVENT = 0x200_u32
   KEYDOWN = 0x300_u16
+  KEYUP = 0x301_u16
   MOUSEMOTION = 0x400_u16
   JOYAXISMOTION = 0x600_u16
   CONTROLLERAXISMOTION = 0x650_u16
@@ -38,8 +39,8 @@ lib LibSDL2
   DOLLARGESTURE = 0x800_u16
   CLIPBOARDUPDATE = 0x900_u16
   DROPFILE = 0x1000_u16
-  USEREVENT = 0x8000_u16
-  LASTEVENT = 0xFFFF_u16
+  USEREVENT = 0x8000_u32
+  LASTEVENT = 0xFFFF_u32
 
   HWACCEL     = 0x00000100_u32
   SRCCOLORKEY = 0x00001000_u32
@@ -179,13 +180,26 @@ lib LibSDL2
     pad : UInt8[1000] #TODO: other event types
   end
 
+  struct UserEvent
+    type : UInt32
+    timestamp : UInt32
+    windowID : UInt32
+    code : Int32
+    data1 : Void*
+    data2 : Void*
+    pad : UInt8[1000] #TODO: other event types
+  end
+
   union Event
-    type : UInt16
+    type : UInt32
     key : KeyboardEvent
+    user : UserEvent
   end
 
   struct RWops
   end
+
+  type TimerCallback = (UInt32, Void*) -> UInt32
 
   fun init = SDL_Init(flags : UInt32) : Int32
   fun get_error = SDL_GetError() : UInt8*
@@ -197,6 +211,7 @@ lib LibSDL2
   fun delay = SDL_Delay(ms : UInt32) : Void
   fun poll_event = SDL_PollEvent(event : Event*) : Int32
   fun wait_event = SDL_WaitEvent(event : Event*) : Int32
+  fun push_event = SDL_PushEvent(event : Event*) : Int32
 
   fun get_window_surface = SDL_GetWindowSurface(window : Window*) : Surface*
   fun lock_surface = SDL_LockSurface(surface : Surface*) : Int32
@@ -230,6 +245,7 @@ lib LibSDL2
 
   fun blit_surface = SDL_UpperBlit(src : Surface*, src_rect : Rect*, dst : Surface*, dst_rect : Rect*) : Int32
 
+  fun add_timer = SDL_AddTimer(interval : UInt32, callback : TimerCallback, param : Void*) : Int32
   fun remove_timer = SDL_RemoveTimer(id : Int32) : Int32
 end
 
